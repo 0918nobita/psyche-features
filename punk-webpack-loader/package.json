@@ -1,0 +1,10 @@
+{
+  "name": "punk-webpack-loader",
+  "version": "1.0.0",
+  "description": "Webpack loader for the PunkScript programming language.",
+  "main": "index.js",
+  "repository": "https://github.com/0918nobita/punkscript.git",
+  "author": "0918nobita",
+  "license": "MIT",
+  "private": true
+}
