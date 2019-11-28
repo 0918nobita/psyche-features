@@ -7,6 +7,7 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
+    "@babel/core": "^7.7.4",
     "fable-loader": "^2.1.8",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
