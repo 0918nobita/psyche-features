@@ -2,12 +2,21 @@ module Punk
 
 open Fable.Core
 
-type IPathModule =
-    abstract basename: string -> string
+let [<Global>] console: JS.Console = jsNative
 
-[<ImportDefault("path")>]
-let pathModule: IPathModule = jsNative
+let [<Global>] JSON: JS.JSON = jsNative
 
-printfn "%s" (pathModule.basename "/foo/bar/baz/myfile.html")
+[<ImportMember("@babel/parser")>]
+let parse: string -> obj = jsNative
 
-printfn "%i" (3 + 4)
+[<ImportDefault("@babel/generator")>]
+let generate (ast: obj, options: obj, code: string): obj = jsNative
+
+let code = "console.log(6 * 7);"
+
+let ast = parse code
+printfn "%s" (JSON.stringify ast)
+
+open Fable.Core.JsInterop
+
+console.log (generate (ast, createObj [], code))
