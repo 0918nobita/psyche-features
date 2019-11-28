@@ -955,6 +955,18 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
+fable-babel-plugins@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/fable-babel-plugins/-/fable-babel-plugins-2.2.0.tgz#2c61be1bd1afb1f03da4e66ccaa1bfecf92063a3"
+  integrity sha512-4g8CIyXCILk5LLiwNPtvtrPy3YuV5eJV18SYJCZxu3A1BSKNvPGHLSg5YcFJ2zt4qmBvSkBewlQ2bVQYG+TnrQ==
+
+fable-loader@^2.1.8:
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/fable-loader/-/fable-loader-2.1.8.tgz#589ae79fa0d047e2d48f4cc82c64830d006840b3"
+  integrity sha512-3cw1BPnAT6AJI/VSMjGuWeAllLiqBSFQBW2AUXQhFwXfJ7XupekgfIb9lW3xv2GPlUQZCLrCDFfqbpFpppJVhA==
+  dependencies:
+    fable-babel-plugins "^2.2.0"
+
 fast-deep-equal@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
