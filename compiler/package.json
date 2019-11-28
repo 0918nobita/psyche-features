@@ -1,0 +1,9 @@
+{
+  "name": "punk-compiler",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/0918nobita/punkscript.git",
+  "author": "0918nobita",
+  "license": "MIT",
+  "private": true
+}
