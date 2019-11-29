@@ -2,15 +2,21 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './src/App.fsproj',
+  entry: './src/index.ts',
   output: {
     path: path.join(__dirname, './dist'),
     filename: 'bundle.js',
   },
   module: {
-    rules: [{
-      test: /\.fs(x|proj)?$/,
-      use: 'fable-loader',
-    }],
+    rules: [
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+      },
+      {
+        test: /\.fs(x|proj)?$/,
+        use: 'fable-loader',
+      },
+    ],
   },
 };
