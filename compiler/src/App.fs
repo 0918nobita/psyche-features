@@ -63,3 +63,17 @@ let ast =
     |> file
 
 console.log (generate (ast, createObj [], ""))
+
+
+type Record =
+    { foo : int
+      bar : int }
+    member this.DoubledFoo = this.foo * 2
+    member this.DoubledBar () = this.bar * 2
+
+let record = { foo = 7; bar = 9 }
+console.log record
+console.log record.foo
+console.log record.DoubledFoo
+console.log record.DoubledBar
+console.log (record.DoubledBar ())
