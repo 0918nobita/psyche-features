@@ -19,5 +19,8 @@
   "dependencies": {
     "@babel/generator": "^7.7.4",
     "@babel/parser": "^7.7.4"
+  },
+  "scripts": {
+    "build": "webpack"
   }
 }
