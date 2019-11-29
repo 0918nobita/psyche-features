@@ -21,6 +21,7 @@
     "@babel/parser": "^7.7.4"
   },
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "typecheck": "tsc --noEmit"
   }
 }
