@@ -7,13 +7,13 @@ A dull, statically-typed language that compiles to JavaScript
 - Export Source Map (`.map`)
 
 ```typescript
-let a: int = 2;
+let mut a: int = 2;
 a <- 3;  // assignment
 
-const b = 4;  // inferred type: int
+let b = 4;  // inferred type: int
 
 // inferred type: (int, int) => int
-const add = fn(x, y) { x + y };
+let add = fn(x, y) { x + y };
 
 fn isEven(n: int): boolean {
   Debug.log('checking...');
@@ -50,8 +50,8 @@ enum Maybe[T] {
   None
 }
 
-const foo: Maybe[int] = None;
-const bar = Some('hello');  // inferred type: Maybe[string]
+let foo: Maybe[int] = None;
+let bar = Some('hello');  // inferred type: Maybe[string]
 ```
 
 ### Record
@@ -66,8 +66,8 @@ record Person {
 ### Pattern matching
 
 ```typescript
-const x = Some(3);
-const y = None;
+let x = Some(3);
+let y = None;
 
 fn mapMaybe(f: int => int, a: Maybe[int]): Maybe[int] {
   match a {
@@ -76,7 +76,7 @@ fn mapMaybe(f: int => int, a: Maybe[int]): Maybe[int] {
   }
 }
 
-const mul7 = fn (n: int) { n * 7 };
+let mul7 = fn (n: int) { n * 7 };
 Debug.log( mapMaybe(mul7, x) );  // => Some(21)
 Debug.log( mapMaybe(mul7, y) );  // => None
 ```
@@ -157,7 +157,7 @@ implicit mod maybeFunctor: Functor[Maybe[_]] {
 import './functor' (Functor);
 
 
-const mul6 = fn (n: int) { n * 6 };
+let mul6 = fn (n: int) { n * 6 };
 
 Debug.log( Functor::fmap(Some(7))(mul6) );  // => Some(42)
 
@@ -181,9 +181,26 @@ Debug.log( fmap([2, 3, 4])(mul6) );  // => [12, 18, 24]
 import './functor' (Functor);
 
 
-const add2 = fn (n: int) { n + 2 };
+let add2 = fn (n: int) { n + 2 };
 
 // [CompileError] Derivation failed.
 // There is no available implicit module for `Functor[T[_]]` signature.
 Debug.log( Functor::fmap(true)(add2) );
 ```
+
+### Compile-time Calculations
+
+```
+immediate {
+  Debug.log('Compiling...')  // output string during compilation
+};
+```
+
+### Code Quotations
+
+- `quote {}` directive
+- `unsafeQuote {}` directive
+- `unquote {}` directive
+- `expand {}` directive
+- `eval()` built-in function
+- `unsafeEval()` built-in function
