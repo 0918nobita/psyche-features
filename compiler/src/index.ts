@@ -1,5 +1,3 @@
-import { record, source } from './App.fsproj';
+import { source } from './App.fsproj';
 
 console.log(source.code);
-
-console.dir(record);

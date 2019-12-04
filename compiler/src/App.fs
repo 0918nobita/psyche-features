@@ -2,71 +2,67 @@ module Punk
 
 open Fable.Core
 
-let [<Global>] console: JS.Console = jsNative
-
-let [<Global>] JSON: JS.JSON = jsNative
-
-[<ImportMember("@babel/parser")>]
-let parse: string -> obj = jsNative
-
 [<ImportDefault("@babel/generator")>]
-let generate (ast: obj, options: obj, code: string): obj = jsNative
+let generate (_ast: obj, _options: obj, _code: string): obj = jsNative
 
 open Fable.Core.JsInterop
 
-let file (program : obj) = createObj [
-    "type" ==> "File"
-    "program" ==> program
-]
+type Ast =
+    | File of program : Ast
+    | Program of body : Ast []
+    | ExprStmt of expr : Ast
+    | CallExpr of callee : Ast * args : Ast []
+    | MemberExpr of object : Ast * property : Ast
+    | Ident of name : string
+    | NumLiteral of value : int
 
-let program (stmts : obj []) = createObj [
-    "type" ==> "Program"
-    "body" ==> stmts
-]
-
-let exprStmt (expr : obj) = createObj [
-    "type" ==> "ExpressionStatement"
-    "expression" ==> expr
-]
-
-let callExpr (callee : obj) (args : obj []) = createObj [
-    "type" ==> "CallExpression"
-    "callee" ==> callee
-    "arguments" ==> args
-]
-
-let memExpr (object : obj) (property : obj) = createObj [
-    "type" ==> "MemberExpression"
-    "object" ==> object
-    "property" ==> property
-]
-
-let ident (name : string) = createObj [
-    "type" ==> "Identifier"
-    "name" ==> name
-]
-
-let numLiteral (n : int) = createObj [
-    "type" ==> "NumericLiteral"
-    "value" ==> n
-]
+    member this.JsObject =
+        match this with
+        | File program ->
+            createObj [
+                "type" ==> "File"
+                "program" ==> program.JsObject
+            ]
+        | Program body ->
+            createObj [
+                "type" ==> "Program"
+                "body" ==> Array.map<Ast, obj> (fun x -> x.JsObject) body
+            ]
+        | ExprStmt expr ->
+            createObj [
+                "type" ==> "ExpressionStatement"
+                "expression" ==> expr.JsObject
+            ]
+        | CallExpr (callee, args) ->
+            createObj [
+                "type" ==> "CallExpression"
+                "callee" ==> callee.JsObject
+                "arguments" ==> Array.map<Ast, obj> (fun x -> x.JsObject) args
+            ]
+        | MemberExpr (object, property) ->
+            createObj [
+                "type" ==> "MemberExpression"
+                "object" ==> object.JsObject
+                "property" ==> property.JsObject
+            ]
+        | Ident name ->
+            createObj [
+                "type" ==> "Identifier"
+                "name" ==> name
+            ]
+        | NumLiteral value ->
+            createObj [
+                "type" ==> "NumericLiteral"
+                "value" ==> value
+            ]
 
 let ast =
-    [| exprStmt
-        (callExpr
-            (memExpr
-                (ident "console")
-                (ident "log"))
-            [| numLiteral 42 |])
-    |]
-    |> program
-    |> file
+    File (Program
+        [| ExprStmt
+            (CallExpr
+                ( MemberExpr (Ident "console", Ident "log")
+                , [| NumLiteral 42 |]
+                ))
+        |])
 
-let source = generate (ast, createObj [], "")
-
-
-type Record =
-    { foo : int
-      bar : int }
-
-let record = { foo = 7; bar = 9 }
+let source = generate (ast.JsObject, createObj [], "")
