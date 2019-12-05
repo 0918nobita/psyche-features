@@ -45,6 +45,45 @@ let (|=) (p : Parser<'a>) (f : 'a -> Parser<'b>) input =
 
 let (|.) m f = m |= fun _ -> f
 
+let succeed ast (loc, rest) =
+    Some { ast = ast; currentLoc = loc; rest = rest }
+
+let option defaultAst p = p <|> succeed defaultAst
+
+let (<~>) p q =
+    p |= fun r -> q |= fun rs -> succeed (r :: rs)
+
+let rec many p =
+    option [] (p |= fun r -> many p |= fun rs -> succeed (r :: rs))
+
+let some p = p <~> many p
+
+let drop p = p |. succeed ()
+
+let mzero _ = None
+
+let item = function
+    | (_, "") -> None
+    | (loc, src) ->
+        let c = src.[0]
+        Some {
+            ast = (loc, c)
+            currentLoc =
+                loc +
+                (if c = '\n'
+                    then { line = 1; chr = 0 }
+                    else { line = 0; chr  = 1 })
+            rest = src.Substring (1, (String.length src - 1))
+        }
+
+let satisfy f =
+    item |= fun c -> if f c then succeed c else mzero
+
+let char c = satisfy (fun (_, c') -> c = c')
+
+let oneOf (cs : string) =
+    satisfy (fun (_, c) -> cs.IndexOf c <> -1 )
+
 open System
 
 let token (tok : string) (loc, src : string) =
