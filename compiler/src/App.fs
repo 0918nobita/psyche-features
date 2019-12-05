@@ -11,7 +11,7 @@ open NodeJS
 
 console.dir _process.argv
 
-open Ast
+open JsAst
 
 let ast =
     File (Program

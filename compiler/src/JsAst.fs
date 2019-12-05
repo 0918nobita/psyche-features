@@ -1,4 +1,4 @@
-module Ast
+module JsAst
 
 open Fable.Core.JsInterop
 
