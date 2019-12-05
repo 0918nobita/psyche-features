@@ -22,9 +22,20 @@ open Fable.Core.JsInterop
 
 let source = generate (ast.JsObject, createObj [], "")
 
+open System
 open Parsec
 
-let parse = fmap (fun (_, x) -> x + "!") (token "abc")
+let spaces: Parser<(Location * char) list> =
+    some <| satisfy (fun (_, c) -> Char.IsWhiteSpace c)
+
+let spacesOpt: Parser<(Location * char) list> =
+    option [] spaces
+
+let parse: Parser<string> =
+    token "abc"
+    |. spacesOpt
+    |. token "def"
+    |= (fun (_, x) -> succeed (x + "!"))
 
 open NodeJS
 
