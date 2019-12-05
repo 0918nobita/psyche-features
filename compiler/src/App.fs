@@ -7,10 +7,6 @@ let generate (_ast: obj, _options: obj, _code: string): obj = jsNative
 
 let [<Global>] console: JS.Console = jsNative
 
-open NodeJS
-
-console.dir _process.argv
-
 open JsAst
 
 let ast =
@@ -25,3 +21,12 @@ let ast =
 open Fable.Core.JsInterop
 
 let source = generate (ast.JsObject, createObj [], "")
+
+open Parsec
+
+let parse = fmap (fun (_, x) -> x + "!") (token "abc")
+
+open NodeJS
+
+if Array.length _process.argv > 2
+    then console.log (parse (bof, _process.argv.[2]))
