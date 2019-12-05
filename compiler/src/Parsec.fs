@@ -29,6 +29,22 @@ let fmap (f : 'a -> 'b) (p : Parser<'a>) input =
             rest = result.rest
         })
 
+let (<*>) (precede : Parser<'a -> 'b>) (succeed : Parser<'a>) input =
+    precede input
+    |> Option.map
+        (fun { ast = f; currentLoc = precedeLoc; rest = rest} ->
+            (fmap f succeed) (precedeLoc, rest))
+
+let (<|>) (p : Parser<'a>) (q : Parser<'a>) input =
+    Option.orElseWith (fun () -> q input) (p input)
+
+let (|=) (p : Parser<'a>) (f : 'a -> Parser<'b>) input =
+    p input
+    |> Option.bind (fun { ast = ast; currentLoc = loc; rest = rest } ->
+        (f ast) (loc, rest))
+
+let (|.) m f = m |= fun _ -> f
+
 open System
 
 let token (tok : string) (loc, src : string) =
