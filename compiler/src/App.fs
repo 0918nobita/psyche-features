@@ -39,5 +39,7 @@ let parse: Parser<string> =
 
 open NodeJS
 
+console.log ((statSync "yarn.lock").mtime)
+
 if Array.length _process.argv > 2
     then console.log (parse (bof, _process.argv.[2]))
