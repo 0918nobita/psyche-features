@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "@babel/generator": "^7.7.4",
-    "@babel/parser": "^7.7.4"
+    "@babel/parser": "^7.7.4",
+    "rxjs": "^6.5.3"
   },
   "scripts": {
     "build": "webpack",
