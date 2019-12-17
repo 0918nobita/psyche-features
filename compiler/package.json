@@ -9,6 +9,7 @@
   "devDependencies": {
     "@babel/core": "^7.7.4",
     "@types/babel__generator": "^7.6.0",
+    "@types/node": "^12.12.18",
     "fable-compiler": "^2.4.11",
     "fable-loader": "^2.1.8",
     "ts-loader": "^6.2.1",
