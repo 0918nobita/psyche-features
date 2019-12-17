@@ -1,5 +1,6 @@
 import Rx = require('rxjs');
 
+// ひとつの値が流れるだけの Cold Observable を作る
 const streamA$ = Rx.of(42);
 
 const streamB$ = Rx.from([10, 20, 30]);
