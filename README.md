@@ -21,23 +21,23 @@ Debug.log( add(a, b) );  // => 7
 Debug.log( is_even(8) );  // => "is_even was called", false
 ```
 
-### Variable shadowing
+## Variable shadowing
 
-### If expression
+## If expression
 
-### Function definition
+## Function definition
 
-### Lambda expression
+## Lambda expression
 
-### Tuple
+## Tuple
 
-### Type alias
+## Type alias
 
 ```typescript
 alias Rgb = (u8, u8, u8);
 ```
 
-### Enum
+## Enum
 
 ```typescript
 enum Maybe[T] {
@@ -49,7 +49,7 @@ let foo: Maybe[i32] = None;
 let bar = Some('hello');  // inferred type: Maybe[string]
 ```
 
-### Record
+## Record
 
 ```typescript
 record Person {
@@ -58,7 +58,7 @@ record Person {
 }
 ```
 
-### Pattern matching
+## Pattern matching
 
 ```typescript
 let x = Some(3);
@@ -76,7 +76,9 @@ Debug.log( map_maybe(mul7, x) );  // => Some(21)
 Debug.log( map_maybe(mul7, y) );  // => None
 ```
 
-### Signature / Module
+## (Partial) Active pattern
+
+## Signature / Module
 
 `hoge.psy` :
 
@@ -107,7 +109,7 @@ open HogeImpl;
 Debug.log( bar("hello") );  // => "hello!"
 ```
 
-### Implicit module
+## Implicit module
 
 `functor.psy` :
 
@@ -162,3 +164,7 @@ let add2 = fn (n: i32) { n + 2 };
 // There is no available implicit module for `Functor[T[_]]` signature.
 Debug.log( Functor::fmap(true)(add2) );
 ```
+
+## Computation expression
+
+WIP
