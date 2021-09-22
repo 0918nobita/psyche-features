@@ -78,7 +78,7 @@ Debug.log( mapMaybe(mul7, y) );  // => None
 
 ### Signature / Module
 
-#### `hoge.punk`
+`hoge.psy` :
 
 ```typescript
 sig Hoge {
@@ -97,7 +97,7 @@ pub mod HogeImpl: Hoge {
 }
 ```
 
-#### `useHoge.punk`
+`use_hoge.psy` :
 
 ```typescript
 import './hoge' (HogeImpl);
@@ -109,7 +109,7 @@ Debug.log( bar("hello") );  // => "hello!"
 
 ### Implicit module
 
-#### `functor.punk`
+`functor.psy` :
 
 ```typescript
 pub sig Functor[T[_]] {
@@ -128,7 +128,7 @@ implicit mod MaybeFunctor: Functor[Maybe[_]] {
 }
 ```
 
-#### `derivation.punk`
+`derivation.psy` :
 
 ```typescript
 // Toplevel implicit modules will be imported automatically.
@@ -151,7 +151,7 @@ implicit mod ListFunctor: Functor[List[_]] {
 Debug.log( fmap([2, 3, 4])(mul6) );  // => [12, 18, 24]
 ```
 
-#### `derivationErr.punk`
+`derivation_err.psy` :
 
 ```typescript
 import './functor' (Functor);
