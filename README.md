@@ -1,30 +1,25 @@
-# PunkScript
+# Features of the [Psyche](https://github.com/0918nobita/psyche) programming language
 
-A dull, statically-typed language that compiles to JavaScript
-
-- Export ES Module (`.mjs`)
-- Export TypeScript Declaration File (`.d.ts`)
-- Export Source Map (`.map`)
+Conceptual Stage
 
 ```typescript
-let mut a: int = 2;
-a <- 3;  // assignment
+// name binding
+let a: i32 = 3;
 
-let b = 4;  // inferred type: int
+let mut b = 0;  // inferred type: i32
+// mutation
+b <- 4;
 
-// inferred type: (int, int) => int
-let add = fn(x, y) { x + y };
+let add = fn (x: i32, y: i32) { x + y };
 
-fn isEven(n: int): boolean {
-  Debug.log('checking...');
+fn is_even(n: i32): bool {
+  Debug.log('is_even was called');
   n % 2 == 0
 }
 
 Debug.log( add(a, b) );  // => 7
-Debug.log( isEven(8) );  // => "checking...", false
+Debug.log( is_even(8) );  // => "is_even was called", false
 ```
-
-## Syntax / Semantics
 
 ### Variable shadowing
 
@@ -38,28 +33,28 @@ Debug.log( isEven(8) );  // => "checking...", false
 
 ### Type alias
 
-```
-alias Rgb = int * int * int;
+```typescript
+alias Rgb = (u8, u8, u8);
 ```
 
 ### Enum
 
-```
+```typescript
 enum Maybe[T] {
   Some(T),
-  None
+  None,
 }
 
-let foo: Maybe[int] = None;
+let foo: Maybe[i32] = None;
 let bar = Some('hello');  // inferred type: Maybe[string]
 ```
 
 ### Record
 
-```
+```typescript
 record Person {
-  age: int,
-  name: string
+  age: i32,
+  name: string,
 }
 ```
 
@@ -69,44 +64,30 @@ record Person {
 let x = Some(3);
 let y = None;
 
-fn mapMaybe(f: int => int, a: Maybe[int]): Maybe[int] {
+fn map_maybe(f: i32 => i32, a: Maybe[i32]): Maybe[i32] {
   match a {
-    Some(v) -> Some(f v),
+    Some(v) -> Some(f(v)),
     None -> None
   }
 }
 
-let mul7 = fn (n: int) { n * 7 };
+let mul7 = fn (n: i32) { n * 7 };
 Debug.log( mapMaybe(mul7, x) );  // => Some(21)
 Debug.log( mapMaybe(mul7, y) );  // => None
-```
-
-### Implicit conversion
-
-```
-implicit fn intToString(n: int): string {
-  Int.toString(n);  // Int is built-in module
-}
-
-fn concatString(a: string, b: string): string {
-  a ++ b
-}
-
-Debug.log( concatString('3 + 4 = ', 3 + 4) );  // => "3 + 4 = 7"
 ```
 
 ### Signature / Module
 
 #### `hoge.punk`
 
-```
+```typescript
 sig Hoge {
-  foo: int => int;
+  foo: i32 => i32;
   bar: string => string;
 }
 
 pub mod HogeImpl: Hoge {
-  fn foo(n: int): int {
+  fn foo(n: i32): i32 {
     n * n
   }
 
@@ -118,14 +99,11 @@ pub mod HogeImpl: Hoge {
 
 #### `useHoge.punk`
 
-```
+```typescript
 import './hoge' (HogeImpl);
 
-
 Debug.log( HogeImpl.foo(6) ); // => 36
-
 open HogeImpl;
-
 Debug.log( bar("hello") );  // => "hello!"
 ```
 
@@ -133,16 +111,16 @@ Debug.log( bar("hello") );  // => "hello!"
 
 #### `functor.punk`
 
-```
+```typescript
 pub sig Functor[T[_]] {
   fmap: {A, B} T[A] => (A => B) => T[B];
 }
 
-implicit mod maybeFunctor: Functor[Maybe[_]] {
+implicit mod MaybeFunctor: Functor[Maybe[_]] {
   fn fmap[A, B](fa: Maybe[A]): (A => B) => Maybe[B] {
     fn (f: A => B) {
       match fa {
-        Some(v) -> Some(f v),
+        Some(v) -> Some(f(v)),
         None -> None
       }
     }
@@ -152,19 +130,17 @@ implicit mod maybeFunctor: Functor[Maybe[_]] {
 
 #### `derivation.punk`
 
-```
+```typescript
 // Toplevel implicit modules will be imported automatically.
 import './functor' (Functor);
 
-
-let mul6 = fn (n: int) { n * 6 };
-
+let mul6 = fn (n: i32) { n * 6 };
 Debug.log( Functor::fmap(Some(7))(mul6) );  // => Some(42)
 
 open Functor;
 
 // additional implicit module
-implicit mod listFunctor: Functor[List[_]] {
+implicit mod ListFunctor: Functor[List[_]] {
   fn fmap[A, B](list: List[A]): (A => B) => List[B] {
     fn (f: A => B) {
       List.map(f, list);  // List is built-in module
@@ -177,30 +153,12 @@ Debug.log( fmap([2, 3, 4])(mul6) );  // => [12, 18, 24]
 
 #### `derivationErr.punk`
 
-```
+```typescript
 import './functor' (Functor);
 
-
-let add2 = fn (n: int) { n + 2 };
+let add2 = fn (n: i32) { n + 2 };
 
 // [CompileError] Derivation failed.
 // There is no available implicit module for `Functor[T[_]]` signature.
 Debug.log( Functor::fmap(true)(add2) );
 ```
-
-### Compile-time Calculations
-
-```
-immediate {
-  Debug.log('Compiling...')  // output string during compilation
-};
-```
-
-### Code Quotations
-
-- `quote {}` directive
-- `unsafeQuote {}` directive
-- `unquote {}` directive
-- `expand {}` directive
-- `eval()` built-in function
-- `unsafeEval()` built-in function
