@@ -72,8 +72,8 @@ fn map_maybe(f: i32 => i32, a: Maybe[i32]): Maybe[i32] {
 }
 
 let mul7 = fn (n: i32) { n * 7 };
-Debug.log( mapMaybe(mul7, x) );  // => Some(21)
-Debug.log( mapMaybe(mul7, y) );  // => None
+Debug.log( map_maybe(mul7, x) );  // => Some(21)
+Debug.log( map_maybe(mul7, y) );  // => None
 ```
 
 ### Signature / Module
